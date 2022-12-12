@@ -1,0 +1,16 @@
+:root {
+  --oscuro: #550000;
+  --primario: #c71b1b;
+  --blanco: #ffffff;
+  --claro: rgb(255, 208, 208);
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px;
+
+
+}

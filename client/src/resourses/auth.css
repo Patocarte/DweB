@@ -1,0 +1,19 @@
+.auth {
+    background-color: rgba(128, 126, 126, 0.1)
+}
+
+.img-auth img {
+    width: 200px;
+}
+
+.img-auth {
+    display: flex;
+    justify-content: center;
+}
+
+.title-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}

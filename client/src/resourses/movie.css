@@ -1,0 +1,32 @@
+.movie-container {
+  width: 450px !important;
+}
+
+.seat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 2px;
+}
+
+.selected-seat {
+  background-color: green;
+  color: white;
+}
+
+.booked-seat {
+  background-color: gray;
+  color: white;
+  pointer-events: none !important;
+  cursor: disabled !important;
+}
+
+.movie-screen {
+  width: 450px;
+  background-color: gray;
+  margin-bottom: 2rem;
+  color: white;
+  text-align: center;
+}

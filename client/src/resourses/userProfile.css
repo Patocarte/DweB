@@ -1,0 +1,29 @@
+.profile-img{
+    width: 150px;
+    border: 1px solid gray;
+    border-radius: 50%;
+}
+
+.profile-info-container{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    align-items: center;
+  
+}
+
+.profile-info{
+    padding-left: 10px;
+   
+}
+
+.profile-info-detail{
+    display: flex;
+}
+
+.profile-info-detail p{
+    padding: 10px;
+}

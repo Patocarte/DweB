@@ -1,0 +1,36 @@
+.movie-image img{
+    max-width: auto;
+    height: 30rem;
+}
+
+.movie-image{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.movie-title {
+    margin-top: 10px;
+    color: var(--oscuro);
+    font-weight: 700;
+    text-align: center;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn{
+    color: var(--oscuro);
+}
+
+.max-size{
+    max-width: 400px;
+    border-radius: 5px;
+    min-height: 815px;
+}
+
+.movie-desc{
+    height: 120px;
+    text-align: center;
+    text-justify: distribute;
+}

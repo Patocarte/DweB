@@ -1,0 +1,14 @@
+.dateItem {
+    border: 2px solid gray;
+    width: 200px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+}
+
+.date-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
