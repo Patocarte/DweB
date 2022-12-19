@@ -4,7 +4,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 // add-movie
 
-router.post("/add-movie", authMiddleware, async (req, res) => {
+router.post("/add-movie", async (req, res) => {
   try {
     const existingMovie = await Movie.findOne({ number: req.body.number });
     if (existingMovie) {
@@ -26,7 +26,7 @@ router.post("/add-movie", authMiddleware, async (req, res) => {
 
 // update-movie
 
-router.post("/update-movie", authMiddleware, async (req, res) => {
+router.post("/update-movie", async (req, res) => {
   try {
     await Movie.findByIdAndUpdate(req.body._id, req.body);
     return res.status(200).send({
@@ -40,7 +40,7 @@ router.post("/update-movie", authMiddleware, async (req, res) => {
 
 // delete-movie
 
-router.post("/delete-movie", authMiddleware, async (req, res) => {
+router.post("/delete-movie", async (req, res) => {
   try {
     await Movie.findByIdAndDelete(req.body._id);
     return res.status(200).send({
@@ -54,7 +54,7 @@ router.post("/delete-movie", authMiddleware, async (req, res) => {
 
 // get-all-movies
 
-router.post("/get-all-movies", authMiddleware, async (req, res) => {
+router.get("/get-all-movies", async (req, res) => {
   try {
     const movies = await Movie.find(req.body);
     return res.status(200).send({
@@ -69,9 +69,10 @@ router.post("/get-all-movies", authMiddleware, async (req, res) => {
 
 // get-movie-by-id
 
-router.post("/get-movie-by-id", authMiddleware, async (req, res) => {
+router.get("/get-movie-by-id/:id", async (req, res) => {
   try {
-    const movie = await Movie.findById(req.body._id);
+    const movie = await Movie.findById(req.params.id);
+    console.log(req);
     return res.status(200).send({
       success: true,
       message: "Movie fetched successfully",

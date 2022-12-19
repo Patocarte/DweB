@@ -17,38 +17,30 @@ const Schema = mongoose.Schema({
     type: String,
     required: true,
   },
-  to: {
-    type: String,
-    required: true,
-  },
-  journeyDate: {
-    type: String,
-    required: true,
-  },
-  departure: {
-    type: String,
-    required: true,
-  },
-  arrival: {
-    type: String,
-    required: true,
-  },
-  type: {
+  status: {
     type: String,
     required: true,
   },
   fare: {
-    type: Number,
+    type: String,
     required: true,
   },
-  seatsBooked: {
-    type: Array,
-    default: [],
-  },
-  status: {
+  image: {
     type: String,
-    default: "Yet To Start",
+    required: true
   },
+  desc: {
+    type: String,
+    required: true
+  },
+  fechas: {
+    type: Array,
+    required: true
+  },
+  journeyDate: {
+    type: String,
+    required: true
+  }
 });
 
 mongoose.models = {};

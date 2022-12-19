@@ -3,27 +3,31 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SeatSelection from "../components/SeatSelection";
-import { axiosInstance } from "../helpers/axiosInstance";
 import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import "../resourses/BookNow.css";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 function BookNow() {
   const [dateState, setDateState] = useState(0);
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const params = useParams();
+  const {id} = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [movie, setMovie] = useState(null);
+  const usid = jwt_decode(localStorage.getItem("token")).userId;
   const getMovie = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/movies/get-movie-by-id", {
-        _id: params.id,
-      });
+      const response = await axios.get(`/api/movies/get-movie-by-id/${id}`,
+
+      );
       dispatch(HideLoading());
       if (response.data.success) {
         setMovie(response.data.data);
-      } else {
+        console.log(response.data.data)
+      }
+      else {
         message.error(response.data.message);
       }
     } catch (error) {
@@ -35,15 +39,30 @@ function BookNow() {
   const bookNow = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/bookings/book-seat", {
-        movie: movie._id,
-        seats: selectedSeats,
+      const beforebuy = movie.fechas[dateState].seatsBooked
+      for (let i = 0; i < beforebuy.length; i++) {
+        for (let j = 0; j < selectedSeats.length; j++) {
+          if (selectedSeats[j] === beforebuy[i].id) {
+            beforebuy[i].usado = true;
+          }
+        }
+      };
+      const fech = movie.fechas[dateState].fecha;
+      const hor = movie.fechas[dateState].hora;
+      const response = await axios.post("/api/bookings/book-seat", {
+        movieid: movie._id,
+        seats: beforebuy,
+        sltddseats: selectedSeats,
         date: dateState,
+        userid: usid,
+        fech: fech,
+        hor: hor,
       });
+      console.log(usid);
       dispatch(HideLoading());
-      if (response.data.success) {
+      if (response.data.message === 'successfully updated!') {
         message.success(response.data.message);
-        navigate("/bookings");
+        navigate(`/user/usid`);
       } else {
         message.error(response.data.message);
       }
@@ -52,7 +71,9 @@ function BookNow() {
       message.error(error.message);
     }
   };
-
+  useEffect(() => {
+      console.log(selectedSeats)
+  }, [selectedSeats])
   useEffect(() => {
     getMovie();
   }, []);
@@ -75,18 +96,13 @@ function BookNow() {
 
             <div className="flex flex-col gap-2">
               <div className="date-content">
-                <div className="dateItem">
-                  Fecha: {movie.fechas[0].fecha} <br />
-                  Hora: {movie.fechas[0].hora}
-                </div>
-                <div className="dateItem">
-                  Fecha: {movie.fechas[1].fecha} <br />
-                  Hora: {movie.fechas[1].hora}
-                </div>
-                <div className="dateItem">
-                  Fecha: {movie.fechas[2].fecha} <br />
-                  Hora: {movie.fechas[2].hora}
-                </div>
+
+                {movie.fechas.map((fecha, index) => (
+                    <div className='dateItem' key={index}>
+                      Fecha: {fecha.fecha} <br />
+                      Hora: {fecha.hora}
+                    </div>
+                ) )}
               </div>
               <p>Seleccionar fecha</p>
               <select
@@ -97,9 +113,8 @@ function BookNow() {
                   setDateState(selectedDate);
                 }}
               >
-                <option value="0">{movie.fechas[0].fecha}</option>
-                <option value="1">{movie.fechas[1].fecha}</option>
-                <option value="2">{movie.fechas[2].fecha}</option>
+                {movie.fechas.map((fecha, index) => <option value={index}>{fecha.fecha}</option>)}
+
               </select>
               <hr />
               <button
@@ -107,7 +122,7 @@ function BookNow() {
                   selectedSeats.length === 0 && "disabled-btn"
                 }`}
                 disabled={selectedSeats.length === 0}
-                onClick={bookNow}
+                onClick={() => bookNow()}
               >
                 Comprar
               </button>

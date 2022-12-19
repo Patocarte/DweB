@@ -16,6 +16,16 @@ const bookingSchema = new mongoose.Schema(
       type: Array,
       require: true,
     },
+    fecha: {
+      type: String,
+        ref: "fecha",
+      require: true
+      },
+    hora: {
+      type: String,
+        ref: "hora",
+      require: true
+      },
     transactionId: {
       type: String,
       require: true,

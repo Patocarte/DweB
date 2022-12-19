@@ -15,11 +15,6 @@ function DefaultLayout({ children }) {
       path: "/",
     },
     {
-      name: "Entradas",
-      icon: "ri-film-line",
-      path: "/bookings",
-    },
-    {
       name: "Perfil",
       icon: "ri-user-line",
       path: `/user/${user._id}`,

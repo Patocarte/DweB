@@ -76,6 +76,7 @@ router.post("/login", async (req, res) => {
       message: "Usuario ingresado correctamente",
       success: true,
       data: token,
+      usid: userExists._id,
     });
   } catch (error) {
     res.send({

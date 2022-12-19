@@ -18,14 +18,8 @@ function Home() {
     });
     try {
       dispatch(ShowLoading());
-      const response = await axios.post(
-        "/api/movies/get-all-movies",
-        tempFilters,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const response = await axios.get(
+        "/api/movies/get-all-movies"
       );
       dispatch(HideLoading());
       if (response.data.success) {

@@ -1,32 +1,37 @@
 const router = require("express").Router();
-const authMiddleware = require("../middlewares/authMiddleware");
 const Booking = require("../models/bookingsModel");
 const Movie = require("../models/movieModel");
-const stripe = require("stripe")(process.env.stripe_key);
 const { v4: uuidv4 } = require("uuid");
 // book a seat
 
-router.post("/book-seat", authMiddleware, async (req, res) => {
-  const newBooking = new Booking({
-    ...req.body,
-    user: req.body.userId,
-  });
+router.post("/book-seat", async (req, res) => {
+  const {movieid, seats, date} = req.body;
 
-  await newBooking.save();
-  const movie = await Movie.findById(req.body.movie);
-  movie.seatsBooked = [...movie.seatsBooked, ...req.body.seats];
-  await movie.save();
-  res.status(200).send({
-    message: "Compra realizada de manera exitosa",
-    data: newBooking,
-    success: true,
+  const newBooking = new Booking({
+    movie: req.body.movieid,
+    user: req.body.userid,
+    seats: req.body.sltddseats,
+    fecha: req.body.fech,
+    hora: req.body.hor,
   });
+  await newBooking.save();
+  const movie = await Movie.findById(movieid);
+  const newFechas = movie.fechas;
+  newFechas[date].seatsBooked = seats;
+
+  Movie.findOneAndUpdate({_id: movieid}, {fechas: newFechas}, function(err,doc) {
+    if (err) {
+      return res.status(500).json({err: err.message});
+    }
+    else return res.json({doc, message:'successfully updated!'})
+  })
 });
+
 
 // make payment
 
 // get bookings by user id
-router.post("/get-bookings-by-user-id", authMiddleware, async (req, res) => {
+router.post("/get-bookings-by-user-id", async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.body.userId })
       .populate("movie")
@@ -46,7 +51,7 @@ router.post("/get-bookings-by-user-id", authMiddleware, async (req, res) => {
 });
 
 // get all bookings
-router.post("/get-all-bookings", authMiddleware, async (req, res) => {
+router.post("/get-all-bookings", async (req, res) => {
   try {
     const bookings = await Booking.find().populate("movie").populate("user");
     res.status(200).send({
